@@ -1,4 +1,4 @@
-= Midiskirt {<img src="https://secure.travis-ci.org/y8/midiskirt.png" />}[http://travis-ci.org/y8/midiskirt]
+= Midiskirt {<img src="https://secure.travis-ci.org/y8/midiskirt.png?branch=master" alt="Build Status" />}[http://travis-ci.org/y8/midiskirt]
 
 Pretty same as Miniskirt[https://github.com/stephencelis/miniskirt], but didn't hurt your eyes.
 
