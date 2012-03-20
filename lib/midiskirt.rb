@@ -12,7 +12,10 @@ require 'active_support/core_ext/hash'
 #   Factory.define :post do |f|
 #     f.user { Factory :user }                     # Blocks, if you must.
 #   end
-class Midiskirt < Struct.new(:__name__, :__klass__, :__parent__, :__attrs__)
+
+Midiskirt = Struct.new(:__name__, :__klass__, :__parent__, :__attrs__)
+
+class Midiskirt
   undef_method *instance_methods.grep(/^(?!__|object_id)/)
   private_class_method :new # "Hide" constructor from world
 

@@ -50,6 +50,7 @@ In a Rails ~> 2.2 project:
 (The MIT License)
 
 (c) 2011 Stephen Celis, stephen@stephencelis.com.
+
 (c) 2012 Alexey Bondar, y8@ya.ru
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
