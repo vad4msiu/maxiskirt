@@ -87,14 +87,14 @@ class MidiskirtTest < Test::Unit::TestCase
 
   def test_objects_should_not_corrupt_attribute_templates
     factories = Midiskirt.instance_variable_get(:@factories)
-    assert_not_equal DefaultSettings.object_id, factories["guest"].__attrs__["settings"].object_id
+    assert_not_same DefaultSettings, factories["guest"].__attrs__["settings"]
   end
 
   def test_factories_should_not_corrupt_attribute_templates
     alice = Factory.build :guest
     bob = Factory.build :guest
 
-    assert_not_equal DefaultSettings.object_id, alice.object_id, "Object from factory should not reference to template object"
+    assert_not_same DefaultSettings, alice.settings
 
     alice.settings["eyes"] = "brown"
 
@@ -103,5 +103,11 @@ class MidiskirtTest < Test::Unit::TestCase
 
   def test_should_sequence_without_database
     assert_not_equal Factory.build(:user).login, Factory.build(:user).login
+  end
+
+  def test_should_not_dup_singletons
+    assert_nothing_raised(TypeError) {
+      Factory(:unbeatable)
+    }
   end
 end

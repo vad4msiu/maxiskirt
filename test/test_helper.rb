@@ -23,6 +23,10 @@ class Post < Mock
   attr_accessor :user
 end
 
+class Unbeatable < Mock
+  attr_accessor :locked, :state, :email, :age, :male
+end
+
 Midiskirt.define :admin, :parent => :user do |f|
   f.login "admin"
 end
@@ -45,4 +49,12 @@ DefaultSettings = {
 Midiskirt.define :guest, :class => :user do |f|
   f.login "guest"
   f.settings DefaultSettings
+end
+
+Midiskirt.define :unbeatable do |f|
+  f.locked false
+  f.state :enabled
+  f.email nil
+  f.age 19
+  f.male true
 end

@@ -1,5 +1,6 @@
 require 'active_support/inflector'
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/object/duplicable'
 
 # Factory girl, relaxed.
 #
@@ -70,7 +71,8 @@ class Midiskirt
 
       klass.new do |record|
         attributes.each do |name, value|
-          record.send(:"#{name}=", (value.kind_of?(Proc) ? value.call(record) : value).dup)
+          value = value.kind_of?(Proc) ? value.call(record) : value
+          record.send(:"#{name}=", value.duplicable? ? value.dup : value)
         end
       end
     end
