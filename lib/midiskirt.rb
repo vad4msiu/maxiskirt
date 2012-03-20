@@ -71,8 +71,15 @@ class Midiskirt
 
       klass.new do |record|
         attributes.each do |name, value|
-          value = value.kind_of?(Proc) ? value.call(record) : value
-          record.send(:"#{name}=", value.duplicable? ? value.dup : value)
+          # Call proc if value is proc or use copy of existent value if
+          # it can be duplicated
+          value = if value.kind_of?(Proc)
+              value.call(record)
+          else
+            value.duplicable? ? value.dup : value
+          end
+
+          record.send(:"#{name}=", value)
         end
       end
     end

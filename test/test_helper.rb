@@ -51,6 +51,11 @@ Midiskirt.define :guest, :class => :user do |f|
   f.settings DefaultSettings
 end
 
+Midiskirt.define :tenant, :class => :user do |f|
+  f.login "tenant"
+  f.settings { DefaultSettings }
+end
+
 Midiskirt.define :unbeatable do |f|
   f.locked false
   f.state :enabled

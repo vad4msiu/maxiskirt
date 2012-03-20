@@ -110,4 +110,8 @@ class MidiskirtTest < Test::Unit::TestCase
       Factory(:unbeatable)
     }
   end
+
+  def test_should_not_dup_proc_results
+    assert_same Factory(:tenant).settings, DefaultSettings
+  end
 end
