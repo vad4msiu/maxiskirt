@@ -114,4 +114,16 @@ class MidiskirtTest < Test::Unit::TestCase
   def test_should_not_dup_proc_results
     assert_same Factory(:tenant).settings, DefaultSettings
   end
+
+  def test_should_respect_closure_arity
+    assert_nothing_raised(ArgumentError) {
+      Factory(:tenant, :settings => lambda { DefaultSettings })
+    }
+  end
+
+  def test_should_pass_record_to_closure
+    Factory(:tenant, :settings => lambda {|record|
+      assert_kind_of(User, record)
+    })
+  end
 end

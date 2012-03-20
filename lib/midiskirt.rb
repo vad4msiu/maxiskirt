@@ -74,7 +74,7 @@ class Midiskirt
           # Call proc if value is proc or use copy of existent value if
           # it can be duplicated
           value = if value.kind_of?(Proc)
-              value.call(record)
+            (value.arity > 0) ? value.call(record) : value.call
           else
             value.duplicable? ? value.dup : value
           end
