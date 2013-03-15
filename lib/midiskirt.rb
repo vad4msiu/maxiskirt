@@ -47,23 +47,16 @@ class Midiskirt
     # You can override default factory settings, by passing them
     # as second argument.
     def build(name, attrs = {})
-      klass, parent, attributes = [:__klass__, :__parent__, :__attrs__].inject([]) {|acc, m| acc << @factories[name.to_s].__send__(m)}
+      factory    = @factories[name.to_s]
 
-      # Create copy of attributes
-      attributes = attributes.dup
+      klass      = factory.__klass__
+      parent     = factory.__parent__
+      attributes = attributes_for(name, attrs)
+      p attributes
 
       # If parent set, then merge parent template with current template
       if parent
-        parent = parent.to_s
-        attributes = @factories[parent].__attrs__.merge(attributes)
-        klass = @factories[parent].__klass__
-      end
-
-      attributes.merge!(attrs).symbolize_keys!
-
-      # Interpolate attributes
-      attributes.each do |name, value|
-        attributes[name] = value.sub(/%\d*d/) {|d| d % (@sequence[klass] += 1) } % attributes if value.kind_of? String
+        klass = @factories[parent.to_s]._factory.__klass__
       end
 
       # Convert klass to real Class
@@ -82,6 +75,34 @@ class Midiskirt
           record.send(:"#{name}=", value)
         end
       end
+    end
+
+    def attributes_for(name, attrs = {})
+      factory    = @factories[name.to_s]
+
+      klass      = factory.__klass__
+      parent     = factory.__parent__
+      attributes = factory.__attrs__
+
+      # Create copy of attributes
+      attributes = attributes.dup
+
+      if parent
+        attributes = attributes_for(@factories[parent.to_s]).merge(attributes)
+      end
+
+      attributes.merge!(attrs).symbolize_keys!
+
+      # Interpolate attributes
+      attributes.each do |name, value|
+        if value.kind_of? String
+          attributes[name] = value.sub(/%\d*d/) { |d|
+            d % (@sequence[klass] += 1)
+          } % attributes
+        end
+      end
+
+      return attributes
     end
 
     # Create and save new factory product

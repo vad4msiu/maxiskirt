@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   # Development depensencies
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency "rake"
+  s.add_development_dependency "debugger"
 
   # Runtime dependencies
   s.add_runtime_dependency "activesupport", RUBY_VERSION >= "1.9" ? ">= 2.2" : ">= 3.0"
