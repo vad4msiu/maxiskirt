@@ -1,4 +1,4 @@
-require 'midiskirt'
+require 'maxiskirt'
 require 'test/unit'
 
 class Mock
@@ -27,18 +27,18 @@ class Unbeatable < Mock
   attr_accessor :locked, :state, :email, :age, :male
 end
 
-Midiskirt.define :admin, :parent => :user do |f|
+Maxiskirt.define :admin, :parent => :user do |f|
   f.login "admin"
 end
 
-Midiskirt.define :user do |f|
+Maxiskirt.define :user do |f|
   f.login "johndoe%d"
   f.email  "%{login}@example.com"
   f.password f.password_confirmation("foobarbaz")
 end
 
-Midiskirt.define :blog_entry, :class => Post do |f|
-  f.user { Midiskirt :admin }
+Maxiskirt.define :blog_entry, :class => Post do |f|
+  f.user { Maxiskirt :admin }
 end
 
 DefaultSettings = {
@@ -46,17 +46,17 @@ DefaultSettings = {
   "eyes" => "gray"
 }
 
-Midiskirt.define :guest, :class => :user do |f|
+Maxiskirt.define :guest, :class => :user do |f|
   f.login "guest"
   f.settings DefaultSettings
 end
 
-Midiskirt.define :tenant, :class => :user do |f|
+Maxiskirt.define :tenant, :class => :user do |f|
   f.login "tenant"
   f.settings { DefaultSettings }
 end
 
-Midiskirt.define :unbeatable do |f|
+Maxiskirt.define :unbeatable do |f|
   f.locked false
   f.state :enabled
   f.email nil

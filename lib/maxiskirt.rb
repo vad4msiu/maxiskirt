@@ -14,9 +14,9 @@ require 'active_support/core_ext/object/duplicable'
 #     f.user { Factory :user }                     # Blocks, if you must.
 #   end
 
-Midiskirt = Struct.new(:__name__, :__klass__, :__parent__, :__params__)
+Maxiskirt = Struct.new(:__name__, :__klass__, :__parent__, :__params__)
 
-class Midiskirt
+class Maxiskirt
   undef_method *instance_methods.grep(/^(?!__|object_id)/)
   private_class_method :new # "Hide" constructor from world
 
@@ -26,7 +26,7 @@ class Midiskirt
   @sequence = Hash.new(0)
 
   class << self
-    # Define new factory with given name. New instance of Midiskirt
+    # Define new factory with given name. New instance of Maxiskirt
     # will be passed as argument to given block.
     #
     # Options are:
@@ -119,12 +119,12 @@ class Midiskirt
   end
 end
 
-# Shortcut to Midiskirt#create
-def Midiskirt(name, params = {})
-  Midiskirt.create(name, params)
+# Shortcut to Maxiskirt#create
+def Maxiskirt(name, params = {})
+  Maxiskirt.create(name, params)
 end
 
 unless Object.const_defined? :Factory
-  Factory = Midiskirt
-  alias Factory Midiskirt
+  Factory = Maxiskirt
+  alias Factory Maxiskirt
 end

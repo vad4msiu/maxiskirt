@@ -11,7 +11,7 @@ task :default => :test
 
 task :loc do
   count = 0
-  File.open("midiskirt.rb").each do |line|
+  File.open("maxiskirt.rb").each do |line|
     count += 1 unless line =~ /^\s*($|#)/   # Any number of spaces followed by EOL or #
   end
   puts "#{count} lines of real code"

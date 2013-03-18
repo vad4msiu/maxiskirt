@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "midiskirt/version"
+require "maxiskirt/version"
 
 Gem::Specification.new do |s|
-  s.name        = "midiskirt"
-  s.version     = Midiskirt::VERSION
+  s.name        = "maxiskirt"
+  s.version     = Maxiskirt::VERSION
   s.summary     = "factory_girl, relaxed"
-  s.description = "Test::Unit begot MiniTest; factory_girl begot Miniskirt, Miniskirt begets Midiskirt"
+  s.description = "Test::Unit begot MiniTest; factory_girl begot Miniskirt, Miniskirt begot Midiskirt, Midiskirt begets Maxiskirt"
 
-  s.authors     = ["Stephen Celis", "Alexey Bondar"]
-  s.email       = ["stephen@stephencelis.com", "y8@ya.ru"]
-  s.homepage    = "http://github.com/y8/midiskirt"
+  s.authors     = ["vad4msiu"]
+  s.email       = ["vad4msiu@gmail.com"]
+  s.homepage    = "http://github.com/vad4msiu/maxiskirt"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

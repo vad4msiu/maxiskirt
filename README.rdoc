@@ -1,4 +1,4 @@
-= Midiskirt {<img src="https://secure.travis-ci.org/y8/midiskirt.png?branch=master" alt="Build Status" />}[http://travis-ci.org/y8/midiskirt]
+= Midiskirt {<img src="https://secure.travis-ci.org/y8/maxiskirt.png?branch=master" alt="Build Status" />}[http://travis-ci.org/y8/maxiskirt]
 
 Pretty same as Miniskirt[https://github.com/stephencelis/miniskirt], but didn't hurt your eyes.
 
@@ -30,14 +30,14 @@ In a Rails ~> 3 project:
   % gem bundle # If necessary, `[sudo] gem install bundler`
 
   # test/test_helper.rb
-  require "midiskirt"
+  require "maxiskirt"
   require "factories" # If you define your factories in test/factories.rb
 
 
 In a Rails ~> 2.2 project:
 
   # config/environments/test.rb
-  config.gem "midiskirt"
+  config.gem "maxiskirt"
 
   % [sudo] rake gems:install
 

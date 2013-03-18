@@ -1,8 +1,8 @@
 require "test_helper"
 
-class MidiskirtTest < Test::Unit::TestCase
+class MaxiskirtTest < Test::Unit::TestCase
   def test_should_define_factories
-    factories = Midiskirt.instance_variable_get :@factories
+    factories = Maxiskirt.instance_variable_get :@factories
 
     assert factories["user"]
     assert factories["blog_entry"]
@@ -95,7 +95,7 @@ class MidiskirtTest < Test::Unit::TestCase
   end
 
   def test_objects_should_not_corrupt_attribute_templates
-    factories = Midiskirt.instance_variable_get(:@factories)
+    factories = Maxiskirt.instance_variable_get(:@factories)
     assert_not_same DefaultSettings, factories["guest"].__params__["settings"]
   end
 
