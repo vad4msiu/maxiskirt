@@ -2,9 +2,9 @@ require 'midiskirt'
 require 'test/unit'
 
 class Mock
-  def initialize
-    yield self
-  end
+  # def initialize
+  #   yield self
+  # end
 
   def save!
     @saved = true
@@ -33,7 +33,7 @@ end
 
 Midiskirt.define :user do |f|
   f.login "johndoe%d"
-  f.email "%{login}@example.com"
+  f.email  "%{login}@example.com"
   f.password f.password_confirmation("foobarbaz")
 end
 

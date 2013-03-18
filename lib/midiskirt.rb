@@ -14,7 +14,7 @@ require 'active_support/core_ext/object/duplicable'
 #     f.user { Factory :user }                     # Blocks, if you must.
 #   end
 
-Midiskirt = Struct.new(:__name__, :__klass__, :__parent__, :__attrs__)
+Midiskirt = Struct.new(:__name__, :__klass__, :__parent__, :__params__)
 
 class Midiskirt
   undef_method *instance_methods.grep(/^(?!__|object_id)/)
@@ -36,70 +36,92 @@ class Midiskirt
       name = name.to_s
 
       # Get class name from options or use name
-      klass = options.delete(:class) { name }
+      klass = options.delete(:class) || name
       parent = options.delete(:parent)
 
-      yield(@factories[name] = new(name, klass, parent, {}))
+      @factories[name] = new(name, klass, parent, {})
+
+      yield(@factories[name])
     end
 
     # Initialize and setup class from factory.
     #
     # You can override default factory settings, by passing them
     # as second argument.
-    def build(name, attrs = {})
-      klass, parent, attributes = [:__klass__, :__parent__, :__attrs__].inject([]) {|acc, m| acc << @factories[name.to_s].__send__(m)}
+    def build(name, params = {})
+      factory    = @factories[name.to_s]
 
-      # Create copy of attributes
-      attributes = attributes.dup
+      klass      = factory.__klass__
+      parent     = factory.__parent__
+      attributes = attributes_for(name, params)
 
       # If parent set, then merge parent template with current template
       if parent
-        parent = parent.to_s
-        attributes = @factories[parent].__attrs__.merge(attributes)
-        klass = @factories[parent].__klass__
-      end
-
-      attributes.merge!(attrs).symbolize_keys!
-
-      # Interpolate attributes
-      attributes.each do |name, value|
-        attributes[name] = value.sub(/%\d*d/) {|d| d % (@sequence[klass] += 1) } % attributes if value.kind_of? String
+        klass = @factories[parent.to_s].__klass__
       end
 
       # Convert klass to real Class
       klass = klass.is_a?(Class) ? klass : klass.to_s.classify.constantize
 
-      klass.new do |record|
-        attributes.each do |name, value|
-          # Call proc if value is proc or use copy of existent value if
-          # it can be duplicated
-          value = if value.kind_of?(Proc)
-            (value.arity > 0) ? value.call(record) : value.call
-          else
-            value.duplicable? ? value.dup : value
-          end
+      object = klass.new
 
-          record.send(:"#{name}=", value)
+      attributes.each do |name, value|
+        object.send(:"#{name}=", value)
+      end
+
+      return object
+    end
+
+    def attributes_for(name, params_for_replace = {})
+      params_for_replace = params_for_replace.symbolize_keys
+
+      factory = @factories[name.to_s]
+
+      klass  = factory.__klass__
+      parent = factory.__parent__
+      params = factory.__params__
+
+      parent_params = if parent
+        @factories[parent.to_s].__params__
+      else
+        {}
+      end
+
+      attributes = {}
+
+      merged_params = parent_params.merge(params).merge(params_for_replace)
+      merged_params.each do |name, value|
+        attributes[name] = case value
+        when String
+          value.sub(/%\d*d/) { |d|
+            d % (@sequence[klass] += 1)
+          } % attributes
+        when Proc
+          value.call
+        else
+          value.duplicable? ? value.dup : value
         end
       end
+
+      return attributes
     end
 
     # Create and save new factory product
-    def create(name, attrs = {})
-      build(name, attrs).tap { |record| record.save! }
+    def create(name, params = {})
+      build(name, params).tap { |record| record.save! }
     end
   end
 
   # Capture method calls, and save it to factory attributes
   def method_missing(name, value = nil, &block)
-    __attrs__.merge!(name => block || value)
+    __params__.merge!(name => block || value)
     value # Return value to be able to use chaining like: f.password f.password_confirmation("something")
   end
 end
 
 # Shortcut to Midiskirt#create
-def Midiskirt(name, attrs = {})
-  Midiskirt.create(name, attrs)
+def Midiskirt(name, params = {})
+  Midiskirt.create(name, params)
 end
 
 unless Object.const_defined? :Factory

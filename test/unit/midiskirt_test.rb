@@ -8,6 +8,15 @@ class MidiskirtTest < Test::Unit::TestCase
     assert factories["blog_entry"]
   end
 
+  def test_should_attributes_for
+    attr_for_user = Factory.attributes_for :user
+    assert_instance_of Hash, attr_for_user
+    assert_not_nil attr_for_user[:login]
+    assert_not_nil attr_for_user[:email]
+    assert_not_nil attr_for_user[:password]
+    assert_not_nil attr_for_user[:password_confirmation]
+  end
+
   def test_should_build_object
     user = Factory.build :user
     assert_instance_of User, user
@@ -87,7 +96,7 @@ class MidiskirtTest < Test::Unit::TestCase
 
   def test_objects_should_not_corrupt_attribute_templates
     factories = Midiskirt.instance_variable_get(:@factories)
-    assert_not_same DefaultSettings, factories["guest"].__attrs__["settings"]
+    assert_not_same DefaultSettings, factories["guest"].__params__["settings"]
   end
 
   def test_factories_should_not_corrupt_attribute_templates
@@ -119,11 +128,5 @@ class MidiskirtTest < Test::Unit::TestCase
     assert_nothing_raised(ArgumentError) {
       Factory(:tenant, :settings => lambda { DefaultSettings })
     }
-  end
-
-  def test_should_pass_record_to_closure
-    Factory(:tenant, :settings => lambda {|record|
-      assert_kind_of(User, record)
-    })
   end
 end
