@@ -1,6 +1,6 @@
-= Midiskirt {<img src="https://secure.travis-ci.org/y8/maxiskirt.png?branch=master" alt="Build Status" />}[http://travis-ci.org/y8/maxiskirt]
+= Midiskirt {<img src="https://secure.travis-ci.org/vad4msiu/maxiskirt.png?branch=master" alt="Build Status" />}[http://travis-ci.org/vad4msiu/maxiskirt]
 
-Pretty same as Miniskirt[https://github.com/stephencelis/miniskirt], but didn't hurt your eyes.
+Pretty same as Midiskirt[https://github.com/y8/midiskirt], but didn't hurt your eyes.
 
 == Usage
 
@@ -19,13 +19,13 @@ Factory girl, relaxed: http://www.stephencelis.com/2010/01/11/miniskirt.html
 
 == Install
 
-  % [sudo] gem install miniskirt
+  % [sudo] gem install maxiskirt
 
 
 In a Rails ~> 3 project:
 
   # Gemfile
-  gem "miniskirt"
+  gem "maxiskirt"
 
   % gem bundle # If necessary, `[sudo] gem install bundler`
 
